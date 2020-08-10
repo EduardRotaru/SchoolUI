@@ -1,0 +1,92 @@
+<div class="centerTextList">
+  <h4 style="margin: 20px;">All Subjects</h4>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Subject Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let subject of subjects">
+        <td>
+          {{ subject.Name }}
+        </td>
+        <td>
+          {{ subject.Description }}
+        </td>
+        <td>
+          <button
+            class="btn btn-info"
+            style="width: 120px; margin-left: 80px;"
+            name="edit"
+            title="Edit"
+            (click)="showEditForm(subject, content)"
+          >
+            Edit
+          </button>
+          <button
+            class="btn btn-danger"
+            style="width: 120px; margin-left: 10px;"
+            name="delete"
+            title="Delete"
+            (click)="deleteSubject(subject)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <button
+    style="margin-left: 10%;"
+    class="btn btn-outline-info"
+    (click)="showAddForm()"
+  >
+    Add Subject
+  </button>
+</div>
+
+<div [hidden]="!subjectForm">
+  <form class="form-user">
+    <p>Save details</p>
+    <input
+      name="name"
+      [(ngModel)]="newSubject.Name"
+      required
+      placeholder="Name"
+      #sbjName="ngModel"
+      class="form-control"
+    />
+    <div *ngIf="sbjName.invalid" style="color: red;">Name required.</div>
+    <br />
+    <input
+      name="Description"
+      [(ngModel)]="newSubject.Description"
+      required
+      placeholder="Description"
+      #sbjDescription="ngModel"
+      class="form-control"
+    />
+    <div *ngIf="sbjDescription.invalid" style="color: red;">
+      Description required.
+    </div>
+    <br />
+
+    <div class="col-md-6 text-center">
+      <button
+        id="btnSave"
+        type="button"
+        class="btn btn-lg btn-primary btn-block"
+        (click)="saveSubject(newSubject)"
+        [disabled]="sbjName.errors?.required || sbjDescription.errors?.required"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

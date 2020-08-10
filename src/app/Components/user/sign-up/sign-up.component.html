@@ -1,0 +1,191 @@
+<div class="centerText">
+  <form
+    class="form-user"
+    #userRegistrationForm="ngForm"
+    (ngSubmit)="OnSubmit(userRegistrationForm)"
+  >
+    <img
+      class="mb-4"
+      src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg"
+      alt=""
+      width="72"
+      height="72"
+    />
+    <h1 class="h3 mb-3 font-weight-normal">Please Register</h1>
+    <div class="inputspacing">
+      <input
+        class="form-control validate"
+        type="text"
+        name="UserName"
+        #UserName="ngModel"
+        [(ngModel)]="user.UserName"
+        required
+        placeholder="Username"
+        #usr="ngModel"
+      />
+      <div *ngIf="usr.invalid" class="errorMessage">
+        Username required.
+      </div>
+    </div>
+
+    <div class="inputspacing">
+      <input
+        class="form-control validate"
+        type="password"
+        name="Password"
+        #Password="ngModel"
+        [(ngModel)]="user.Password"
+        required
+        minlength="3"
+        placeholder="Password"
+        #pass="ngModel"
+      />
+      <div *ngIf="pass.invalid" class="errorMessage">Password required.</div>
+      <label
+        [attr.data-error]="
+          Password.errors != null
+            ? Password.errors.required
+              ? 'Required field!'
+              : 'Minimum 3 characters needed'
+            : ''
+        "
+      ></label>
+    </div>
+
+    <div class="inputspacing">
+      <input
+        class="form-control validate"
+        type="text"
+        name="Email"
+        #Email="ngModel"
+        [(ngModel)]="user.Email"
+        [pattern]="emailPattern"
+        placeholder="Email"
+        #em="ngModel"
+        required
+      />
+      <div *ngIf="em.invalid" class="errorMessage">Email required.</div>
+    </div>
+
+    <div class="inputspacing">
+      <input
+        type="text"
+        name="FirstName"
+        #FirstName="ngModel"
+        [(ngModel)]="user.FirstName"
+        class="form-control"
+        placeholder="First Name"
+        required
+        #fn="ngModel"
+      />
+      <div *ngIf="fn.invalid" class="errorMessage">First name required.</div>
+    </div>
+
+    <div class="inputspacing">
+      <label for="LastName" class="sr-only">Last Name</label>
+      <input
+        type="text"
+        name="LastName"
+        #LastName="ngModel"
+        [(ngModel)]="user.LastName"
+        class="form-control"
+        placeholder="Last Name"
+        required
+        #ln="ngModel"
+      />
+      <div *ngIf="ln.invalid" class="errorMessage">First name required.</div>
+    </div>
+
+    <div *ngIf="roles" class="inputspacing">
+      <select
+        (change)="changeSelectedRole($event.target.value)"
+        [(ngModel)]="role"
+        [ngModelOptions]="{ standalone: true }"
+        required
+        #rr="ngModel"
+        class="form-control"
+      >
+        <option class="dropdown-item" [ngValue]="noVal" disabled selected>
+          Select an option
+        </option>
+        <option *ngFor="let role of roles | slice: 1" value="{{ role.Id }}">
+          {{ role.Name }}
+        </option>
+      </select>
+      <div *ngIf="rr.invalid" class="errorMessage">Role required.</div>
+    </div>
+
+    <div *ngIf="visibleForTeachers" class="inputspacing">
+      <select
+        class="form-control"
+        name="Subject"
+        [(ngModel)]="selectedSubject"
+        required
+        #sbj="ngModel"
+      >
+        <option
+          class="dropdown-item"
+          [ngValue]="defaultValue"
+          disabled
+          selected
+        >
+          Select an option
+        </option>
+        <option
+          class="dropdown-item"
+          *ngFor="let subject of subjects"
+          [ngValue]="subject"
+          [selected]="selectedSubject"
+          >{{ subject.Name }}</option
+        >
+      </select>
+      <div *ngIf="sbj.invalid" class="errorMessage">Subject required.</div>
+    </div>
+
+    <div *ngIf="visibleForTeachers" class="inputspacing">
+      <label for="TeacherCode" class="sr-only">Teacher Code</label>
+      <input
+        type="text"
+        name="TeacherCode"
+        placeholder="Teacher code"
+        [(ngModel)]="user.TeacherCode"
+        required
+        #TeacherCode="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="TeacherCode.invalid" class="errorMessage">
+        Teacher Code Required.
+      </div>
+    </div>
+
+    <div *ngIf="visibleForStudents" class="inputspacing">
+      <label *ngIf="visibleForStudents" for="StudentCode" class="sr-only"
+        >Student Code</label
+      >
+      <input
+        type="text"
+        name="StudentCode"
+        placeholder="Student code"
+        [(ngModel)]="user.StudentCode"
+        required
+        #StudentCode="ngModel"
+        class="form-control"
+      />
+      <div *ngIf="StudentCode.invalid" class="errorMessage">
+        Student Code Required.
+      </div>
+    </div>
+    <button
+      style="margin-top: 20px;"
+      class="btn btn-lg btn-primary btn-block"
+      type="submit"
+      [disabled]="!userRegistrationForm.valid"
+      type="submit"
+    >
+      Sign Up
+    </button>
+  </form>
+  <label [routerLink]="['/login']">
+    Login
+  </label>
+</div>

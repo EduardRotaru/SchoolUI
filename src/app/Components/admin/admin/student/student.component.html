@@ -1,0 +1,76 @@
+<div class="centerTextList">
+  <h4 style="margin: 20px;">All Students</h4>
+  <div class="search-box" style="width: 30%; margin-bottom: 20px;">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search"
+      [(ngModel)]="query"
+      id="listSearch"
+    />
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Student Name</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students | search: query">
+        <td>
+          {{ student.FirstName }}
+          {{ student.LastName }}
+        </td>
+        <td>
+          <button
+            class="btn btn-warning mr-2"
+            (click)="showEditForm(student, content)"
+          >
+            Edit
+          </button>
+          <button class="btn btn-danger" (click)="deleteStudent(student)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div [hidden]="!studentForm">
+  <form class="form-user">
+    <p>Save details</p>
+    <input
+      name="firstName"
+      [(ngModel)]="newStudent.FirstName"
+      required
+      placeholder="First Name"
+      #fName="ngModel"
+      class="form-control"
+    />
+    <div *ngIf="fName.invalid" style="color: red;">First name required.</div>
+    <br />
+    <input
+      name="lastName"
+      [(ngModel)]="newStudent.LastName"
+      required
+      placeholder="Last Name"
+      #lName="ngModel"
+      class="form-control"
+    />
+    <div *ngIf="lName.invalid" style="color: red;">Last name required.</div>
+    <br />
+
+    <div class="col-md-6 text-center">
+      <button
+        id="btnSave"
+        type="button"
+        class="btn btn-outline-dark"
+        (click)="saveStudent(newStudent)"
+        [disabled]="lName.errors?.required || fName.errors?.required"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

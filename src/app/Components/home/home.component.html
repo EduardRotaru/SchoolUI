@@ -1,0 +1,183 @@
+<div *ngIf="userClaims" class="container" style="margin-left: 9%;">
+  <div class="row mb-1">
+    <div class="col-md-7">
+      <div class="d-flex flex-row border rounded">
+        <div class="p-0 w-25">
+          <img
+            src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+            class="img-thumbnail border-0"
+          />
+        </div>
+        <div class="pl-3 pt-2 pr-2 pb-2 w-75 border-left">
+          <h5 (click)="Logout()">Logout</h5>
+
+          <div *ngIf="userService.roleMatch(['Administrator'])">
+            <a routerLink="/admin">Admin Panel</a>
+          </div>
+
+          <h4 class="text-primary">
+            {{ userClaims.FirstName }} {{ userClaims.LastName }}
+          </h4>
+          <!-- change this for appropiate role -->
+          <h5 class="text-info">{{ teacherSubject?.Name }}</h5>
+          <ul
+            class="m-0 float-left"
+            style="list-style: none; margin: 0; padding: 0;"
+          >
+            <li>
+              <i class="fab fa-facebook-square"></i> Logged On :
+              {{ userClaims.LoggedOn }}
+            </li>
+            <li>
+              <i class="fab fa-twitter-square"></i> Email :
+              {{ userClaims.Email }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="userService.roleMatch(['Teacher'])" [hidden]="!visibleGrades">
+  <button
+    style="margin-left: 10%;"
+    class="btn btn-outline-info"
+    (click)="showStudents()"
+  >
+    Show Students
+  </button>
+</div>
+
+<div *ngIf="showAllStudents" class="centerTextList">
+  <h4 style="margin: 20px;">All Students</h4>
+  <div class="search-box" style="width: 30%; margin-bottom: 20px;">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search"
+      [(ngModel)]="query"
+      id="listSearch"
+    />
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Student Name</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students | search: query">
+        <td>
+          {{ student.FirstName }}
+          {{ student.LastName }}
+        </td>
+        <td>
+          <button
+            class="btn btn-outline-success mr-2"
+            (click)="showGiveGrade(student)"
+          >
+            Give Grade
+          </button>
+          <button class="btn btn-outline-info" (click)="showGrades(student)">
+            Show All Grades
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="centerText" [hidden]="!gradeForm">
+  <form class="form-user">
+    <h4>{{ studentName }}</h4>
+    <input
+      name="grade"
+      [(ngModel)]="newGrade.Grade"
+      required
+      placeholder="Grade"
+      #grd="ngModel"
+      type="number"
+      step="1"
+      min="1"
+      class="form-control"
+      max="10"
+    />
+    <div *ngIf="grd.invalid" class="errorMessage">Grade required.</div>
+    <br />
+    <input
+      name="evaluation"
+      [(ngModel)]="newGrade.Evaluation"
+      required
+      placeholder="Evaluation"
+      class="form-control"
+      #evl="ngModel"
+    />
+    <div *ngIf="evl.invalid" class="errorMessage">Evaluation</div>
+    <br />
+
+    <input
+      name="commentary"
+      [(ngModel)]="newGrade.Commentary"
+      required
+      class="form-control"
+      placeholder="Commentary"
+    />
+    <div style="margin-top: 20px;">
+      <button
+        id="btnSave"
+        type="button"
+        class="btn btn-lg btn-primary btn-block"
+        (click)="saveGrades(newGrade)"
+        [disabled]="grd.errors?.required || evl.errors?.required || grd.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>
+
+<div [hidden]="!visibleGrades" class="centerTextList">
+  <h4 style="margin: 20px;">{{ studentName }}</h4>
+
+  <div class="search-box" style="width: 30%; margin-bottom: 20px;">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search data"
+      [(ngModel)]="query"
+      id="listSearch"
+    />
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Evaluation</th>
+        <th scope="col">Grade</th>
+        <th scope="col">Commentary</th>
+        <th scope="col">Discipline</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let grade of grades | search: query">
+        <td>
+          {{ grade.Evaluation }}
+        </td>
+        <td>
+          {{ grade.Grade }}
+        </td>
+        <td>
+          {{ grade.Commentary }}
+        </td>
+        <td>
+          {{ grade.Subject.Name }}
+        </td>
+        <td>
+          {{ grade.Date }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

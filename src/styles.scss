@@ -1,0 +1,37 @@
+/* You can add global styles to this file, and also import other style files */
+#toast-container > div {
+  opacity: 1;
+}
+
+.toast-error {
+  opacity: 1;
+  background-color: #bd362f;
+}
+
+.toast-success {
+  opacity: 1;
+  background-color: #51a351;
+}
+.centerText {
+  text-align: center !important;
+}
+
+.centerTextList {
+  text-align: center !important;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.form-user {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.errorMessage {
+  color: red;
+  position: relative;
+  float: right;
+  font-size: 14px;
+}

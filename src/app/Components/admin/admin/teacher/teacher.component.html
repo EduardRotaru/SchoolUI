@@ -1,0 +1,118 @@
+<div class="centerTextList">
+  <h4 style="margin: 20px;">All teachers</h4>
+  <div class="search-box" style="width: 30%; margin-bottom: 20px;">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search"
+      [(ngModel)]="query"
+      id="listSearch"
+    />
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Student Name</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let teacher of teachers | search: query">
+        <td>
+          {{ teacher.FirstName }}
+          {{ teacher.LastName }}
+        </td>
+        <td>
+          <button
+            class="btn btn-info"
+            style="width: 120px; margin-left: 80px;"
+            name="edit"
+            title="Edit"
+            (click)="openEditEmployee(teacher, content)"
+          >
+            Edit
+          </button>
+          <button
+            class="btn btn-danger"
+            style="width: 120px; margin-left: 10px;"
+            name="delete"
+            title="Delete"
+            (click)="deleteTeacher(teacher)"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header" style="background-color: #343a40; color: white;">
+    <h4 class="modal-title blue" id="modal-basic-title">Add New Teacher</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      style="color: white;"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div (ngSubmit)="saveTeacher()" class="py-3">
+      <div class="py-1">
+        <input
+          type="text"
+          id="modalInputAddTeacher"
+          class="form-control"
+          placeholder="First Name"
+          [(ngModel)]="newTeacher.FirstName"
+          required
+          #fName="ngModel"
+        />
+        <div *ngIf="fName.invalid" style="color: red;">
+          First name required.
+        </div>
+      </div>
+
+      <div class="py-1">
+        <input
+          type="text"
+          id="modalInputAddEmployee"
+          class="form-control py-1"
+          placeholder="Last Name"
+          [(ngModel)]="newTeacher.LastName"
+          required
+          #lName="ngModel"
+        />
+        <div *ngIf="lName.invalid" style="color: red;">Last name required.</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <button
+          id="btnModal"
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="saveTeacher(newTeacher)"
+          [disabled]="lName.errors?.required || fName.errors?.required"
+        >
+          Save
+        </button>
+      </div>
+      <div class="col-md-6 text-center">
+        <button
+          id="btnModal"
+          type="button"
+          class="btn btn-outline-dark"
+          (click)="modal.close()"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

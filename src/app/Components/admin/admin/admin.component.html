@@ -1,0 +1,24 @@
+<p style="text-align: center;">Admin Page</p>
+<div class="centerTextList">
+  <button class="btn btn-outline-dark mr-2" (click)="showStudents()">
+    Show Students
+  </button>
+  <button class="btn btn-outline-dark mr-2" (click)="showTeachers()">
+    Show Teachers
+  </button>
+  <button class="btn btn-outline-dark mr-2" (click)="showSubjects()">
+    Show Subjects
+  </button>
+</div>
+
+<div *ngIf="showStudentsList">
+  <app-student></app-student>
+</div>
+
+<div *ngIf="showTeachersList">
+  <app-teacher></app-teacher>
+</div>
+
+<div *ngIf="showSubjectsList">
+  <app-subject></app-subject>
+</div>
